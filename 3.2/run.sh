@@ -42,4 +42,8 @@ fi
 
 $cmd &
 
+if [ "$MONGODB_HOST" != "" ]; then
+    /repl_set_master.sh
+fi
+
 fg
