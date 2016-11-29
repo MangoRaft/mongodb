@@ -28,6 +28,8 @@ if [ ! -f /data/db/.mongodb_password_set ]; then
         $cmd --master &
 
         /set_mongodb_password.sh
+
+        sleep 5
     fi
 fi
 
@@ -37,8 +39,6 @@ if [ "$REPLSET" != "" ]; then
     else
     cmd="$cmd --master"
 fi
-
-sleep 5
 
 $cmd &
 
