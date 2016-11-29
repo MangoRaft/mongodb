@@ -29,7 +29,7 @@ fi
 
 
 if [ "$REPLSET" != "" ]; then
-    cmd="$cmd --replSet $REPLSET"
+    cmd="$cmd --replSet /mongodb-keyfile"
     else
     cmd="$cmd --master"
 fi
