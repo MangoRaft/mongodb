@@ -11,7 +11,7 @@ done
 IFS=',' read -r -a array <<< "$MONGODB_HOSTS"
 
 mongo $MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASS $MONGOHOST --eval "rs.initiate(); rs.initiate({ _id : '$REPLSET',version : 1,members : [{ _id : 0,host : '$MONGODB_HOST' }]});"
-mongo $MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASS $MONGOHOST --eval "cfg = rs.conf();cfg.members[1].host = '$MONGODB_HOST';rs.reconfig(cfg)"
+mongo $MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASS $MONGOHOST --eval "cfg = rs.conf();cfg.members[1].host = '$MONGODB_HOST';rs.reconfig(cfg,{ force: true })"
 
 
 for element in "${array[@]}"
