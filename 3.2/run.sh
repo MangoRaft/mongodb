@@ -24,7 +24,9 @@ fi
 $cmd --master &
 
 if [ ! -f /data/db/.mongodb_password_set ]; then
+if [ "$AUTH" == "yes" ]; then
     /set_mongodb_password.sh
+fi
 fi
 
 
