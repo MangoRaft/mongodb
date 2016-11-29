@@ -34,6 +34,8 @@ if [ "$REPLSET" != "" ]; then
     cmd="$cmd --master"
 fi
 
+sleep 5
+
 $cmd &
 
 fg
