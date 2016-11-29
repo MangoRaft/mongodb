@@ -21,12 +21,14 @@ if [ "$OPLOG_SIZE" != "" ]; then
     cmd="$cmd --oplogSize $OPLOG_SIZE"
 fi
 
-$cmd --master &
 
 if [ ! -f /data/db/.mongodb_password_set ]; then
-if [ "$AUTH" == "yes" ]; then
-    /set_mongodb_password.sh
-fi
+    if [ "$AUTH" == "yes" ]; then
+
+        $cmd --master &
+
+        /set_mongodb_password.sh
+    fi
 fi
 
 
