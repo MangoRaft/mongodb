@@ -27,7 +27,8 @@ if [ ! -f /data/db/.mongodb_password_set ]; then
     /set_mongodb_password.sh
 fi
 
-kill mongod
+kill mongod &
+
 
 if [ "$REPLSET" != "" ]; then
     cmd="$cmd --replSet $REPLSET"
