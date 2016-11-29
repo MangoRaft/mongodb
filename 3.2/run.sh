@@ -7,11 +7,7 @@ if [ "$AUTH" == "yes" ]; then
     cmd="$cmd --auth"
 fi
 
-if [ "$REPLSET" != "" ]; then
-    cmd="$cmd --replSet $REPLSET"
-    else
-    cmd="$cmd --master"
-fi
+
 
 if [ "$KEYFILE" == "yes" ]; then
     cmd="$cmd --keyFile mongodb-keyfile"
@@ -25,10 +21,20 @@ if [ "$OPLOG_SIZE" != "" ]; then
     cmd="$cmd --oplogSize $OPLOG_SIZE"
 fi
 
-$cmd &
+$cmd --master &
 
 if [ ! -f /data/db/.mongodb_password_set ]; then
     /set_mongodb_password.sh
 fi
+
+kill mongod
+
+if [ "$REPLSET" != "" ]; then
+    cmd="$cmd --replSet $REPLSET"
+    else
+    cmd="$cmd --master"
+fi
+
+$cmd &
 
 fg
