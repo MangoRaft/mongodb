@@ -45,7 +45,7 @@ if [ "$CONFIGSVR" != "" ]; then
 elif [ "$MONGOS" != "" ]; then
     mongos --keyFile /mongodb-keyfile --configdb $REPLSET/$CONFIGSVR_HOSTS &
 else
-    mongodb_cmd &
+    $mongodb_cmd &
 fi
 
 
