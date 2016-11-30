@@ -27,12 +27,4 @@ fi
 echo "=> Done!"
 touch /data/db/.mongodb_password_set
 
-echo "========================================================================"
-echo "You can now connect to this MongoDB server using:"
-echo ""
-echo "    mongo $DATABASE -u $USER -p $PASS --host <host> --port <port>"
-echo ""
-echo "Please remember to change the above password as soon as possible!"
-echo "========================================================================"
-
 mongo $DATABASE -u $USER -p $PASS  --eval "db.getSiblingDB('admin').shutdownServer();"

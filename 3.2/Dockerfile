@@ -19,7 +19,6 @@ ENV JOURNALING yes
 ADD mongodb-keyfile /mongodb-keyfile
 ADD run.sh /run.sh
 ADD set_mongodb_password.sh /set_mongodb_password.sh
-ADD repl_set_master.sh /repl_set_master.sh
 
 EXPOSE 27017 28017
 

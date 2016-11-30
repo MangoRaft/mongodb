@@ -1,31 +1,30 @@
 #!/bin/bash
 set -m
 
-mongodb_cmd="mongod --storageEngine $STORAGE_ENGINE"
-cmd="$mongodb_cmd --httpinterface --rest"
+mongodb_cmd="mongod --storageEngine $STORAGE_ENGINE  --httpinterface --rest"
+
+
 if [ "$AUTH" == "yes" ]; then
-    cmd="$cmd --auth"
+    mongodb_cmd="$mongodb_cmd --auth"
 fi
 
-
-
 if [ "$KEYFILE" == "yes" ]; then
-    cmd="$cmd --keyFile mongodb-keyfile"
+    mongodb_cmd="$mongodb_cmd --keyFile mongodb-keyfile"
 fi
 
 if [ "$JOURNALING" == "no" ]; then
-    cmd="$cmd --nojournal"
+    mongodb_cmd="$mongodb_cmd --nojournal"
 fi
 
 if [ "$OPLOG_SIZE" != "" ]; then
-    cmd="$cmd --oplogSize $OPLOG_SIZE"
+    mongodb_cmd="$mongodb_cmd --oplogSize $OPLOG_SIZE"
 fi
+if [ "$AUTH" == "yes" ]; then
 
+    if [ ! -f /data/db/.mongodb_password_set ]; then
+    
 
-if [ ! -f /data/db/.mongodb_password_set ]; then
-    if [ "$AUTH" == "yes" ]; then
-
-        $cmd --master &
+        $mongodb_cmd --master &
 
         /set_mongodb_password.sh
 
@@ -35,15 +34,20 @@ fi
 
 
 if [ "$REPLSET" != "" ]; then
-    cmd="$cmd --replSet $REPLSET --keyFile /mongodb-keyfile"
+    mongodb_cmd="$mongodb_cmd --replSet $REPLSET --keyFile /mongodb-keyfile"
     else
-    cmd="$cmd --master"
+    mongodb_cmd="$mongodb_cmd --master"
 fi
 
-$cmd &
 
-if [ "$MONGODB_HOST" != "" ]; then
-    /repl_set_master.sh
+if [ "$CONFIGSVR" != "" ]; then
+    mongod --keyFile /mongodb-keyfile --configsvr --replSet $REPLSET &
+elif [ "$MONGOS" != "" ]; then
+    mongos --keyFile /mongodb-keyfile --configdb $REPLSET/$CONFIGSVR_HOSTS &
+else
+    mongodb_cmd &
 fi
+
+
 
 fg
